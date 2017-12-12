@@ -22,27 +22,35 @@ class Converter(object):
     
     def convert(self, url):
         song = None
-        if url.startswith("http://weixin.singworld.cn/"):
-            song = self.minik(url)
-        elif url.startswith("http://changba.com"):
-            song = self.changba(url)
-        elif url.startswith("https://kg.qq.com"):
-            song = self.quan_min(url)
-        elif url.startswith("https://uc.ipktv.com"):
-            song = self.youchang(url)
-        elif url.startswith("https://vod.ktvsky.com"):
-            song = self.wow(url)
-        
+        try:
+            if url.startswith("http://weixin.singworld.cn/"):
+                song = self.minik(url)
+            elif url.startswith("http://changba.com"):
+                song = self.changba(url)
+            elif url.startswith("https://kg.qq.com"):
+                song = self.quan_min(url)
+            elif url.startswith("https://uc.ipktv.com"):
+                song = self.youchang(url)
+            elif url.startswith("https://vod.ktvsky.com"):
+                song = self.wow(url)
+        except Exception as e:
+            logger.error(e)
+
         return song
     
     def minik(self, url):
         # 解析参数
         result = parse.urlparse(url)
-        fragment = result.fragment
-        jobid = str(fragment).replace("/details/", "").replace("--ml--", "")
-        params = parse.parse_qs(result.query)
-        uid = params['uid'][0]
-        songid = params['songid'][0]
+        fragment = str(result.fragment)
+        if fragment.find("-&-") != -1:
+            array = fragment.replace("/details/", "").split("-&-")
+            uid = array[0]
+            jobid = array[1]
+        else:
+            jobid = fragment.replace("/details/", "").replace("--ml--", "")
+            params = parse.parse_qs(result.query)
+            uid = params['uid'][0]
+            songid = params['songid'][0]
         req_url = "http://weixin.singworld.cn/api/record/record_detail/?&uid={0}&jobid={1}".format(uid, jobid)
         content = Converter.get_content(req_url)
         music_info = json.loads(content)['data']['record']

@@ -21,7 +21,7 @@ class UserService(BaseService):
     def insert_or_update(self, openid):
         user = self.get(openid)
         if user is None:
-            info = {'openid': openid, 'nickname': '', 'headimgurl': '', 'count': 1, 'is_pay': 0}
+            info = {'openid': openid, 'nickname': '', 'headimgurl': '', 'count': 0, 'is_pay': 0}
             self.save(info)
     
     def inc_count(self, openid, count):
