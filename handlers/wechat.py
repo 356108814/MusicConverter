@@ -82,7 +82,7 @@ class WechatHandler(BaseHandler):
             # 下载
             if req_msg.startswith("http"):
                 if not user_service.is_can_download(message.from_user_name):
-                    text = "由于下载带宽费用高昂，普通用户只能免费下载一首。如需继续下载，请加小扎微信赞助带宽费用，以红包形式，谢谢支持。赞助标准：2元一首，5首起步。小扎微信号：fhm911"
+                    text = "由于下载带宽费用高昂，下载歌曲需要收费。如需继续下载，请加小扎微信赞助带宽费用，以红包形式，谢谢支持。赞助标准：2元一首，5首起步。小扎微信号：fhm911"
                     wechat_service.reply_text(text)
                 else:
                     song = converter_service.convert(req_msg)
