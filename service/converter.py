@@ -124,7 +124,7 @@ class Converter(object):
         content = subprocess.getoutput("curl %s" % api)
         bs = BeautifulSoup(content, 'html.parser')
         song_url = bs.find('video').attrs['src']
-        song_name = bs.find("h3", {"id": "song_name"})
+        song_name = bs.find("h3", {"id": "song_name"}).text
         song = Song(song_name, song_url)
         return song
     
