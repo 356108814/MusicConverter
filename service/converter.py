@@ -10,8 +10,8 @@ import subprocess
 from bs4 import BeautifulSoup
 from urllib import parse
 from urllib import request
-from coffeebean.log import logger
 
+from coffeebean.log import logger
 from models.song import Song
 
 
@@ -33,6 +33,8 @@ class Converter(object):
                 song = self.youchang(url)
             elif url.startswith("https://vod.ktvsky.com"):
                 song = self.wow(url)
+            elif url.startswith("http://www.quanminktv.cn"):
+                song = self.quanmin_ktv(url)
         except Exception as e:
             logger.error(e)
 
@@ -50,7 +52,6 @@ class Converter(object):
             jobid = fragment.replace("/details/", "").replace("--ml--", "")
             params = parse.parse_qs(result.query)
             uid = params['uid'][0]
-            songid = params['songid'][0]
         req_url = "http://weixin.singworld.cn/api/record/record_detail/?&uid={0}&jobid={1}".format(uid, jobid)
         content = Converter.get_content(req_url)
         music_info = json.loads(content)['data']['record']
@@ -117,6 +118,15 @@ class Converter(object):
         
         song = Song(music_info['_title'], music_info['_merge_songs_file_url_mp3'])
         return song
+
+    def quanmin_ktv(self, url):
+        api = "http://localhost:8050/render.html?url={0}&timeout=10&wait=0.5".format(url)
+        content = subprocess.getoutput("curl %s" % api)
+        bs = BeautifulSoup(content, 'html.parser')
+        song_url = bs.find('video').attrs['src']
+        song_name = bs.find("h3", {"id": "song_name"})
+        song = Song(song_name, song_url)
+        return song
     
     @staticmethod
     def get_content(url, encoding="utf-8"):
@@ -130,5 +140,8 @@ if __name__ == '__main__':
     req_url = "https://vod.ktvsky.com/dp/song?id=10289542"
     req_url = "http://weixin.singworld.cn/web_frontend_alipay/share_cp/?songid=C007600&uid=21249984&uuid=4db34f4e-52cc-4a6e-b6c5-2e6068267d66&zfflag=0#/details/57775_LOW_20171208202751--ml--"
     req_url = "https://uc.ipktv.com/youCS/youC20170216/youCShare/index#/shareDetail/54217849?play=0"
+    req_url = "http://weixin.singworld.cn/web_frontend/share_cp/?share=1&uid=6692089&uuid=1ea03a3e-16ae-4d17-83cb-1f2923cd749c#/details/3284_20170602170056--ml--"
+    req_url = "http://www.quanminktv.cn/wechat/videoPlay?video_id=1103&owner_openid=oZkxjv-Qx3MulS6IxAmPilPVzFIQ"
+    req_url = "http://uservideos.oss-cn-beijing.aliyuncs.com/2C14E81539814F8D8ECCE11D826E7002"
     converter = Converter()
-    print(converter.wow(req_url))
+    print(converter.quanmin_ktv(req_url))
