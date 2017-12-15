@@ -82,7 +82,11 @@ class WechatHandler(BaseHandler):
             # 下载
             if req_msg.startswith("http"):
                 if not user_service.is_can_download(message.from_user_name):
-                    text = "由于下载带宽费用高昂，下载歌曲需要收费。如需继续下载，请加小扎微信赞助带宽费用，以红包形式，谢谢支持。赞助标准：2元一首，5首起步。小扎微信号：fhm911"
+                    song = converter_service.convert(req_msg)
+                    song_tip = ""
+                    if song is not None:
+                        song_tip = "你要下的歌曲为：%s\n\n" % song.name
+                    text = song_tip + "由于下载带宽费用高昂，下载歌曲需要收费。如需继续下载，请加小扎微信赞助带宽费用，以红包形式，谢谢支持。赞助标准：2元一首，5首起步。小扎微信号：fhm911"
                     wechat_service.reply_text(text)
                 else:
                     song = converter_service.convert(req_msg)
@@ -95,7 +99,7 @@ class WechatHandler(BaseHandler):
                         text = text.format(download_url, song.name)
                         wechat_service.reply_text(text)
                     else:
-                        wechat_service.reply_text("人工客服，请加小扎微信，微信号：fhm911")
+                        wechat_service.reply_text("歌曲不存在，请检查输入的歌曲链接。如有问题，请联系人工客服，请加小扎微信，微信号：fhm911")
             else:
                 wechat_service.reply_text("人工客服，请加小扎微信，微信号：fhm911")
 
