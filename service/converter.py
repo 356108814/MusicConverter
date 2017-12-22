@@ -27,11 +27,11 @@ class Converter(object):
                 song = self.minik(url)
             elif url.startswith("http://changba.com"):
                 song = self.changba(url)
-            elif url.startswith("https://kg.qq.com"):
+            elif url.startswith("https://kg.qq.com") or url.startswith("http://kg.qq.com"):
                 song = self.quan_min(url)
-            elif url.startswith("https://uc.ipktv.com"):
+            elif url.startswith("https://uc.ipktv.com") or url.startswith("http://uc.ipktv.com"):
                 song = self.youchang(url)
-            elif url.startswith("https://vod.ktvsky.com"):
+            elif url.startswith("https://vod.ktvsky.com") or url.startswith("http://vod.ktvsky.com"):
                 song = self.wow(url)
             elif url.startswith("http://www.quanminktv.cn"):
                 song = self.quanmin_ktv(url)
@@ -143,5 +143,6 @@ if __name__ == '__main__':
     req_url = "http://weixin.singworld.cn/web_frontend/share_cp/?share=1&uid=6692089&uuid=1ea03a3e-16ae-4d17-83cb-1f2923cd749c#/details/3284_20170602170056--ml--"
     req_url = "http://www.quanminktv.cn/wechat/videoPlay?video_id=1103&owner_openid=oZkxjv-Qx3MulS6IxAmPilPVzFIQ"
     req_url = "http://uservideos.oss-cn-beijing.aliyuncs.com/2C14E81539814F8D8ECCE11D826E7002"
+    req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index?from=singlemessage#/shareDetail/64566091"
     converter = Converter()
-    print(converter.quanmin_ktv(req_url))
+    print(converter.youchang(req_url))
