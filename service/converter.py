@@ -27,7 +27,7 @@ class Converter(object):
                 song = self.minik(url)
             elif url.startswith("http://changba.com"):
                 song = self.changba(url)
-            elif url.find("kg.qq.com") != -1 or url.find("kg2.qq.com"):
+            elif url.find("kg.qq.com") != -1 or url.find("kg2.qq.com") != -1:
                 song = self.quan_min(url)
             elif url.find("uc.ipktv.com") != -1:
                 song = self.youchang(url)
@@ -114,6 +114,7 @@ class Converter(object):
         req = request.Request(api_url, headers=headers, method="POST")
         response = request.urlopen(req, json.dumps(values).encode())
         json_obj = json.loads(response.read().decode())
+        print(json_obj)
         music_info = json_obj['response']['data']['row']
         
         song = Song(music_info['_title'], music_info['_merge_songs_file_url_mp3'])
@@ -145,5 +146,6 @@ if __name__ == '__main__':
     req_url = "http://uservideos.oss-cn-beijing.aliyuncs.com/2C14E81539814F8D8ECCE11D826E7002"
     req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index?from=singlemessage#/shareDetail/64566091"
     req_url = "https://kg2.qq.com/node/play?s=gM-W8wgVE7X2Cgog&shareuid=679e9483262c3583&topsource=&from=singlemessage&isappinstalled=0"
+    req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index#/shareDetail/14393247"
     converter = Converter()
     print(converter.convert(req_url))
