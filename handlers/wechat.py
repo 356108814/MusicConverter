@@ -87,7 +87,7 @@ class WechatHandler(BaseHandler):
                     song_tip = ""
                     if song is not None:
                         song_tip = "你要下的歌曲为：%s\n\n" % song.name
-                    text = song_tip + "由于下载带宽费用高昂，下载歌曲需要收费。如需继续下载，请加小扎微信赞助带宽费用，以红包形式，谢谢支持。赞助标准：2元一首，5首起步。小扎微信号：fhm911"
+                    text = song_tip + "如需继续下载，请加小扎微信(微信号：fhm911)以红包或转账形式赞助带宽费用，谢谢支持。\n赞助标准：\n1首5元；3首10元"
                     wechat_service.reply_text(text)
                 else:
                     logger.info("download url: %s" % req_msg)
