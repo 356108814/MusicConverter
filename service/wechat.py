@@ -50,7 +50,7 @@ class WechatService(object):
 </item>
 </Articles>
 </xml>"""
-        text = tpl.format(self.from_user, self.to_user, int(time.time()), title, pic_url, url)
+        text = tpl.format(self.from_user, self.to_user, int(time.time()), title, desc, pic_url, url)
         self.handler.finish(text)
         return text
     
