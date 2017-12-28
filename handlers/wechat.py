@@ -62,7 +62,8 @@ class WechatHandler(BaseHandler):
                     need_help = True
                     break
             if need_help:
-                wechat_service.reply_help()
+                wechat_service.reply_text("直接在聊天框中回复要下载的歌曲链接即可")
+                # wechat_service.reply_help()
                 return
             
             if req_msg.startswith("keyc"):
