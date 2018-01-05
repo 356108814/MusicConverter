@@ -45,11 +45,11 @@ class Converter(object):
         result = parse.urlparse(url)
         fragment = str(result.fragment)
         if fragment.find("-&-") != -1:
-            array = fragment.replace("/details/", "").split("-&-")
+            array = fragment.replace("/details/", "").replace("/photos/", "").split("-&-")
             uid = array[0]
             jobid = array[1]
         else:
-            jobid = fragment.replace("/details/", "").replace("--ml--", "")
+            jobid = fragment.replace("/details/", "").replace("/photos/", "").replace("--ml--", "")
             params = parse.parse_qs(result.query)
             uid = params['uid'][0]
         req_url = "http://weixin.singworld.cn/api/record/record_detail/?&uid={0}&jobid={1}".format(uid, jobid)
@@ -147,5 +147,6 @@ if __name__ == '__main__':
     req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index?from=singlemessage#/shareDetail/64566091"
     req_url = "https://kg2.qq.com/node/play?s=gM-W8wgVE7X2Cgog&shareuid=679e9483262c3583&topsource=&from=singlemessage&isappinstalled=0"
     req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index#/shareDetail/14393247"
+    req_url = "http://weixin.singworld.cn/web_frontend_alipay/record/?zf_flag=0#/photos/16276112-&-49030_LOW_20180105161000"
     converter = Converter()
     print(converter.convert(req_url))
