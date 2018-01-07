@@ -58,7 +58,16 @@ class Converter(object):
         song_url = "http://{0}/{1}".format(music_info['domain'], music_info['url'])
         song = Song(music_info['song_name'], song_url)
         return song
-    
+
+    def minik2(self, uid, jobid):
+        # 解析参数
+        req_url = "http://weixin.singworld.cn/api/record/record_detail/?&uid={0}&jobid={1}".format(uid, jobid)
+        content = Converter.get_content(req_url)
+        music_info = json.loads(content)['data']['record']
+        song_url = "http://{0}/{1}".format(music_info['domain'], music_info['url'])
+        song = Song(music_info['song_name'], song_url)
+        return song
+
     def changba(self, url):
         content = Converter.get_content(url)
         # <div class="title">普通的disco【洛天依】</div>
