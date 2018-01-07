@@ -27,7 +27,7 @@ class Converter(object):
                 song = self.minik(url)
             elif url.startswith("http://changba.com"):
                 song = self.changba(url)
-            elif url.find("kg.qq.com") != -1 or url.find("kg2.qq.com") != -1:
+            elif url.find("qq.com") != -1 or url.find("kg.qq.com") != -1 or url.find("kg2.qq.com") != -1:
                 song = self.quan_min(url)
             elif url.find("uc.ipktv.com") != -1:
                 song = self.youchang(url)
@@ -52,6 +52,15 @@ class Converter(object):
             jobid = fragment.replace("/details/", "").replace("--ml--", "")
             params = parse.parse_qs(result.query)
             uid = params['uid'][0]
+        req_url = "http://weixin.singworld.cn/api/record/record_detail/?&uid={0}&jobid={1}".format(uid, jobid)
+        content = Converter.get_content(req_url)
+        music_info = json.loads(content)['data']['record']
+        song_url = "http://{0}/{1}".format(music_info['domain'], music_info['url'])
+        song = Song(music_info['song_name'], song_url)
+        return song
+
+    def minik2(self, uid, jobid):
+        # 解析参数
         req_url = "http://weixin.singworld.cn/api/record/record_detail/?&uid={0}&jobid={1}".format(uid, jobid)
         content = Converter.get_content(req_url)
         music_info = json.loads(content)['data']['record']
@@ -147,5 +156,9 @@ if __name__ == '__main__':
     req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index?from=singlemessage#/shareDetail/64566091"
     req_url = "https://kg2.qq.com/node/play?s=gM-W8wgVE7X2Cgog&shareuid=679e9483262c3583&topsource=&from=singlemessage&isappinstalled=0"
     req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index#/shareDetail/14393247"
+    req_url = "https://kg3.qq.com/node/play?s=tyshg1tqdIIbqthE&shareuid=67959b82262e378d36&topsource=a0_pn201001006_z1_u586733062_l1_t1515287550__"
     converter = Converter()
     print(converter.convert(req_url))
+    # print(converter.minik2('22101826', '90130_LOW_20171224220931'))
+    # print(converter.minik2('22101826', '90130_LOW_20171224220033'))
+    # print(converter.minik2('22101826', '90130_LOW_20171224220443'))
