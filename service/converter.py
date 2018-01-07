@@ -27,7 +27,7 @@ class Converter(object):
                 song = self.minik(url)
             elif url.startswith("http://changba.com"):
                 song = self.changba(url)
-            elif url.find("kg.qq.com") != -1 or url.find("kg2.qq.com") != -1:
+            elif url.find("qq.com") != -1 or url.find("kg.qq.com") != -1 or url.find("kg2.qq.com") != -1:
                 song = self.quan_min(url)
             elif url.find("uc.ipktv.com") != -1:
                 song = self.youchang(url)
