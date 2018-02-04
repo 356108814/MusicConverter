@@ -108,8 +108,12 @@ class Converter(object):
     
     def youchang(self, url):
         result = parse.urlparse(url)
-        fragment = result.fragment
-        index = str(fragment).replace("/shareDetail/", "")
+        if url.find("shareDetail") != -1:
+            fragment = result.fragment
+            index = str(fragment).replace("/shareDetail/", "")
+        elif url.find("?id="):
+            index = str(result.query).replace("id=", "")
+        
         api_url = "https://uc.ipktv.com/youCS/youC20170216/wxYouCApi20170330/index"
         headers = {
             'User-Agent': "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 MicroMessenger/6.5.2.501 NetType/WIFI WindowsWechat QBCore/3.43.691.400 QQBrowser/9.0.2524.400"}
@@ -156,5 +160,7 @@ if __name__ == '__main__':
     req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index?from=singlemessage#/shareDetail/64566091"
     req_url = "https://kg2.qq.com/node/play?s=gM-W8wgVE7X2Cgog&shareuid=679e9483262c3583&topsource=&from=singlemessage&isappinstalled=0"
     req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index#/shareDetail/14393247"
+    req_url = "http://weixin.singworld.cn/web_frontend_alipay/record/?zf_flag=0#/photos/16276112-&-49030_LOW_20180105161000"
+    req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index?id=76405366"
     converter = Converter()
     print(converter.convert(req_url))
