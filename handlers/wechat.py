@@ -96,7 +96,8 @@ class WechatHandler(BaseHandler):
                     if song is not None:
                         user_service.reduce_count(message.from_user_name)
                         text = '注：苹果手机需要用电脑版微信下载\n\n<a href="{0}">{1}（点击直接下载）</a>'
-                        song_url = urllib.parse.quote(song.url)
+                        #song_url = urllib.parse.quote(song.url)
+                        song_url = song.url
                         download_url = "http://converter.wezhake.com/download/?name={0}&url={1}".format(song.name, song_url)
                         text = text.format(download_url, song.name)
                         wechat_service.reply_text(text)

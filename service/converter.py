@@ -43,15 +43,21 @@ class Converter(object):
     def minik(self, url):
         # 解析参数
         result = parse.urlparse(url)
-        fragment = str(result.fragment)
-        if fragment.find("-&-") != -1:
-            array = fragment.replace("/details/", "").split("-&-")
-            uid = array[0]
-            jobid = array[1]
-        else:
-            jobid = fragment.replace("/details/", "").replace("--ml--", "")
-            params = parse.parse_qs(result.query)
+        params = parse.parse_qs(result.query)
+        if "uid" in params and 'jobid' in params:
             uid = params['uid'][0]
+            jobid = params['jobid'][0]
+        else:
+            fragment = str(result.fragment)
+            if fragment.find("-&-") != -1:
+                array = fragment.replace("/details/", "").split("-&-")
+                uid = array[0]
+                jobid = array[1]
+            else:
+                jobid = fragment.replace("/details/", "").replace("--ml--", "")
+                params = parse.parse_qs(result.query)
+                uid = params['uid'][0]
+
         req_url = "http://weixin.singworld.cn/api/record/record_detail/?&uid={0}&jobid={1}".format(uid, jobid)
         content = Converter.get_content(req_url)
         music_info = json.loads(content)['data']['record']
@@ -162,5 +168,6 @@ if __name__ == '__main__':
     req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index#/shareDetail/14393247"
     req_url = "http://weixin.singworld.cn/web_frontend_alipay/record/?zf_flag=0#/photos/16276112-&-49030_LOW_20180105161000"
     req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index?id=76405366"
+    req_url = "http://weixin.singworld.cn/web_frontend/gift/?bag_id=89001&uid=24693743&activity_id=180220019&jobid=3784_LOW_20180209165618&zf_flag=0#/show/"
     converter = Converter()
     print(converter.convert(req_url))
