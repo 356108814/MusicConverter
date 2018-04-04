@@ -25,7 +25,7 @@ class Converter(object):
         try:
             if url.startswith("http://weixin.singworld.cn/"):
                 song = self.minik(url)
-            elif url.startswith("http://changba.com"):
+            elif url.find("changba.com") != -1:
                 song = self.changba(url)
             elif url.find("qq.com") != -1 or url.find("kg.qq.com") != -1 or url.find("kg2.qq.com") != -1:
                 song = self.quan_min(url)
@@ -79,7 +79,7 @@ class Converter(object):
         # <div class="title">普通的disco【洛天依】</div>
         # (function(){var a="http://qiniuuwmp3.changba.com/939278470.mp3"
         name_matches = re.findall(r'<div class="title">(.*)</div>', content, re.M)
-        url_matches = re.findall(r'http:.*\.mp3",', content, re.M)
+        url_matches = re.findall(r'https?:.*\.mp3",', content, re.M)
         song_name = name_matches[0].replace("\",", "")
         song_url = url_matches[0].replace("\",", "")
         song = Song(song_name, song_url)
@@ -157,17 +157,19 @@ class Converter(object):
 if __name__ == '__main__':
     req_url = "https://kg.qq.com/node/play?s=tGE9XrtqVcWTKtms"
     req_url = "http://changba.com/s/dfmUU7cLNlynZAG5hQrXsQ?&code=RkvQSz26klqSrOkSuFVHIacdpsUjbX4zL9c2vg82dbU3L_I2RK_eDEuCrjBzuklN-ci288TsX1ONcqXOXW0U5TJ7U0J8Bi32QrXF6D9NxfE"
-    req_url = "https://vod.ktvsky.com/dp/song?id=10289542"
-    req_url = "http://weixin.singworld.cn/web_frontend_alipay/share_cp/?songid=C007600&uid=21249984&uuid=4db34f4e-52cc-4a6e-b6c5-2e6068267d66&zfflag=0#/details/57775_LOW_20171208202751--ml--"
-    req_url = "https://uc.ipktv.com/youCS/youC20170216/youCShare/index#/shareDetail/54217849?play=0"
-    req_url = "http://weixin.singworld.cn/web_frontend/share_cp/?share=1&uid=6692089&uuid=1ea03a3e-16ae-4d17-83cb-1f2923cd749c#/details/3284_20170602170056--ml--"
-    req_url = "http://www.quanminktv.cn/wechat/videoPlay?video_id=1103&owner_openid=oZkxjv-Qx3MulS6IxAmPilPVzFIQ"
-    req_url = "http://uservideos.oss-cn-beijing.aliyuncs.com/2C14E81539814F8D8ECCE11D826E7002"
-    req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index?from=singlemessage#/shareDetail/64566091"
-    req_url = "https://kg2.qq.com/node/play?s=gM-W8wgVE7X2Cgog&shareuid=679e9483262c3583&topsource=&from=singlemessage&isappinstalled=0"
-    req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index#/shareDetail/14393247"
-    req_url = "http://weixin.singworld.cn/web_frontend_alipay/record/?zf_flag=0#/photos/16276112-&-49030_LOW_20180105161000"
-    req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index?id=76405366"
-    req_url = "http://weixin.singworld.cn/web_frontend/gift/?bag_id=89001&uid=24693743&activity_id=180220019&jobid=3784_LOW_20180209165618&zf_flag=0#/show/"
+    # req_url = "https://vod.ktvsky.com/dp/song?id=10289542"
+    # req_url = "http://weixin.singworld.cn/web_frontend_alipay/share_cp/?songid=C007600&uid=21249984&uuid=4db34f4e-52cc-4a6e-b6c5-2e6068267d66&zfflag=0#/details/57775_LOW_20171208202751--ml--"
+    # req_url = "https://uc.ipktv.com/youCS/youC20170216/youCShare/index#/shareDetail/54217849?play=0"
+    # req_url = "http://weixin.singworld.cn/web_frontend/share_cp/?share=1&uid=6692089&uuid=1ea03a3e-16ae-4d17-83cb-1f2923cd749c#/details/3284_20170602170056--ml--"
+    # req_url = "http://www.quanminktv.cn/wechat/videoPlay?video_id=1103&owner_openid=oZkxjv-Qx3MulS6IxAmPilPVzFIQ"
+    # req_url = "http://uservideos.oss-cn-beijing.aliyuncs.com/2C14E81539814F8D8ECCE11D826E7002"
+    # req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index?from=singlemessage#/shareDetail/64566091"
+    # req_url = "https://kg2.qq.com/node/play?s=gM-W8wgVE7X2Cgog&shareuid=679e9483262c3583&topsource=&from=singlemessage&isappinstalled=0"
+    # req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index#/shareDetail/14393247"
+    # req_url = "http://weixin.singworld.cn/web_frontend_alipay/record/?zf_flag=0#/photos/16276112-&-49030_LOW_20180105161000"
+    # req_url = "http://uc.ipktv.com/youCS/youC20170216/youCShare/index?id=76405366"
+    # req_url = "http://weixin.singworld.cn/web_frontend/gift/?bag_id=89001&uid=24693743&activity_id=180220019&jobid=3784_LOW_20180209165618&zf_flag=0#/show/"
+    # req_url = "http://weixin.singworld.cn/web_frontend/share_cp/?share=1&uid=11550427&uuid=b9f62d97-ad76-49e2-8594-33c7aecddea3#/details/99893_LOW_20180330202155--ml--"
+    # req_url = "https://changba.com/s/VvWMAJ3oOIVcBhzu_FpCOQ?&code=RkvQSz26klot6SFmZqBIloTh9fY5YYMxRIwYupqnNwKkKq0gf7CNbAns8V7gRplBweyCXpNvFJLeQDJdxgMB78IWGHtfNyxdC7gsopz_nPU"
     converter = Converter()
     print(converter.convert(req_url))
