@@ -23,7 +23,7 @@ class Converter(object):
     def convert(self, url):
         song = None
         try:
-            if url.startswith("http://weixin.singworld.cn/"):
+            if url.find("weixin.singworld.cn"):
                 song = self.minik(url)
             elif url.find("changba.com") != -1:
                 song = self.changba(url)
